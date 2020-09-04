@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PdfSharp.Drawing;
@@ -28,8 +29,12 @@ namespace TesteIFrame.Controllers
                 if (!inicializeDocFolder)
                     Directory.CreateDirectory($@"{Directory.GetCurrentDirectory()}\wwwroot\doc");
 
-                var imagem = Image.FromFile($@"{Directory.GetCurrentDirectory()}\wwwroot\img\ddt s31.png");
-                var bytes = ImageToByteArray(imagem);
+                var blobUrl = "https://examesredacoes01.blob.core.windows.net/redacoesdev/ENEM/Inscricoes/86278199041/_12_DiplomaGraduacaoVerso_020200901172933.JPG";
+
+                WebClient wc = new WebClient();
+                byte[] bytes = wc.DownloadData(blobUrl);
+                //var imagem = Image.FromFile($@"{Directory.GetCurrentDirectory()}\wwwroot\img\ddt s31.png");
+                //var bytes = ImageToByteArray(imagem);
                 var pdf = ImageConverter(bytes);
                 ViewBag.Url = pdf;
             }
